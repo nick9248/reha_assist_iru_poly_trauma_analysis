@@ -1,0 +1,406 @@
+{
+  "total_cases": 50,
+  "categories": {
+    "K\u00f6rperteil": {
+      "positive_cases": 49,
+      "percentage": 98.0,
+      "subcategories": [
+        "Kopf",
+        "Hals",
+        "Thorax",
+        "Abdomen",
+        "Arm",
+        "Wirbelsaeule",
+        "Bein",
+        "Becken"
+      ],
+      "subcategory_stats": {
+        "Kopf": {
+          "name": "Kopf",
+          "positive_cases": 27,
+          "percentage_of_total": 54.0,
+          "percentage_of_category": 55.10204081632652
+        },
+        "Hals": {
+          "name": "Hals",
+          "positive_cases": 1,
+          "percentage_of_total": 2.0,
+          "percentage_of_category": 2.0408163265306123
+        },
+        "Thorax": {
+          "name": "Thorax",
+          "positive_cases": 33,
+          "percentage_of_total": 66.0,
+          "percentage_of_category": 67.3469387755102
+        },
+        "Abdomen": {
+          "name": "Abdomen",
+          "positive_cases": 10,
+          "percentage_of_total": 20.0,
+          "percentage_of_category": 20.408163265306122
+        },
+        "Arm": {
+          "name": "Arm",
+          "positive_cases": 32,
+          "percentage_of_total": 64.0,
+          "percentage_of_category": 65.3061224489796
+        },
+        "Wirbelsaeule": {
+          "name": "Wirbelsaeule",
+          "positive_cases": 27,
+          "percentage_of_total": 54.0,
+          "percentage_of_category": 55.10204081632652
+        },
+        "Bein": {
+          "name": "Bein",
+          "positive_cases": 30,
+          "percentage_of_total": 60.0,
+          "percentage_of_category": 61.224489795918366
+        },
+        "Becken": {
+          "name": "Becken",
+          "positive_cases": 13,
+          "percentage_of_total": 26.0,
+          "percentage_of_category": 26.53061224489796
+        }
+      }
+    },
+    "Somatisch": {
+      "positive_cases": 46,
+      "percentage": 92.0,
+      "subcategories": [
+        "Somatisch-- Funktionsstoerung",
+        "Somatisch-- Schmerz",
+        "Somatisch--Komplikationen"
+      ],
+      "subcategory_stats": {
+        "Somatisch-- Funktionsstoerung": {
+          "name": "Funktionsstoerung",
+          "positive_cases": 42,
+          "percentage_of_total": 84.0,
+          "percentage_of_category": 91.30434782608695
+        },
+        "Somatisch-- Schmerz": {
+          "name": "Schmerz",
+          "positive_cases": 28,
+          "percentage_of_total": 56.00000000000001,
+          "percentage_of_category": 60.86956521739131
+        },
+        "Somatisch--Komplikationen": {
+          "name": "Komplikationen",
+          "positive_cases": 22,
+          "percentage_of_total": 44.0,
+          "percentage_of_category": 47.82608695652174
+        }
+      }
+    },
+    "Personenbezogen": {
+      "positive_cases": 33,
+      "percentage": 66.0,
+      "subcategories": [
+        "Personenbezogen--Psychische Probleme/Compliance",
+        "Personenbezogen--Entsch\u00e4digungsbegehren",
+        "Personenbezogen--Migrationshintergrund",
+        "Personenbezogen--Suchtverhalten",
+        "Personenbezogen--Zus\u00e4tzliche Erkrankungen"
+      ],
+      "subcategory_stats": {
+        "Personenbezogen--Psychische Probleme/Compliance": {
+          "name": "Psychische Probleme/Compliance",
+          "positive_cases": 22,
+          "percentage_of_total": 44.0,
+          "percentage_of_category": 66.66666666666666
+        },
+        "Personenbezogen--Entsch\u00e4digungsbegehren": {
+          "name": "Entsch\u00e4digungsbegehren",
+          "positive_cases": 2,
+          "percentage_of_total": 4.0,
+          "percentage_of_category": 6.0606060606060606
+        },
+        "Personenbezogen--Migrationshintergrund": {
+          "name": "Migrationshintergrund",
+          "positive_cases": 2,
+          "percentage_of_total": 4.0,
+          "percentage_of_category": 6.0606060606060606
+        },
+        "Personenbezogen--Suchtverhalten": {
+          "name": "Suchtverhalten",
+          "positive_cases": 2,
+          "percentage_of_total": 4.0,
+          "percentage_of_category": 6.0606060606060606
+        },
+        "Personenbezogen--Zus\u00e4tzliche Erkrankungen": {
+          "name": "Zus\u00e4tzliche Erkrankungen",
+          "positive_cases": 21,
+          "percentage_of_total": 42.0,
+          "percentage_of_category": 63.63636363636363
+        }
+      }
+    },
+    "Taetigkeit": {
+      "positive_cases": 50,
+      "percentage": 100.0,
+      "subcategories": [
+        "Taetigkeit--Arbeitsunf\u00e4hig",
+        "T\u00e4tigkeit--Wiedereingliederung",
+        "T\u00e4tigkeit--Arbeitsfaehig",
+        "T\u00e4tigkeit--BU/EU",
+        "Altersrentner",
+        "Ehrenamt",
+        "Zuverdienst"
+      ],
+      "subcategory_stats": {
+        "Taetigkeit--Arbeitsunf\u00e4hig": {
+          "name": "Arbeitsunf\u00e4hig",
+          "positive_cases": 33,
+          "percentage_of_total": 66.0,
+          "percentage_of_category": 66.0
+        },
+        "T\u00e4tigkeit--Wiedereingliederung": {
+          "name": "Wiedereingliederung",
+          "positive_cases": 20,
+          "percentage_of_total": 40.0,
+          "percentage_of_category": 40.0
+        },
+        "T\u00e4tigkeit--Arbeitsfaehig": {
+          "name": "Arbeitsfaehig",
+          "positive_cases": 19,
+          "percentage_of_total": 38.0,
+          "percentage_of_category": 38.0
+        },
+        "T\u00e4tigkeit--BU/EU": {
+          "name": "BU/EU",
+          "positive_cases": 5,
+          "percentage_of_total": 10.0,
+          "percentage_of_category": 10.0
+        },
+        "Altersrentner": {
+          "name": "Altersrentner",
+          "positive_cases": 9,
+          "percentage_of_total": 18.0,
+          "percentage_of_category": 18.0
+        },
+        "Ehrenamt": {
+          "name": "Ehrenamt",
+          "positive_cases": 0,
+          "percentage_of_total": 0.0,
+          "percentage_of_category": 0.0
+        },
+        "Zuverdienst": {
+          "name": "Zuverdienst",
+          "positive_cases": 0,
+          "percentage_of_total": 0.0,
+          "percentage_of_category": 0.0
+        }
+      }
+    },
+    "Umwelt": {
+      "positive_cases": 29,
+      "percentage": 57.99999999999999,
+      "subcategories": [
+        "Umwelt--Beziehungsprobleme",
+        "Umwelt--Soziale Isolation",
+        "Umwelt--Mobilitaetsprobleme",
+        "Umwelt--Wohnsituatuation",
+        "Umwelt--Finazielle Probleme"
+      ],
+      "subcategory_stats": {
+        "Umwelt--Beziehungsprobleme": {
+          "name": "Beziehungsprobleme",
+          "positive_cases": 5,
+          "percentage_of_total": 10.0,
+          "percentage_of_category": 17.24137931034483
+        },
+        "Umwelt--Soziale Isolation": {
+          "name": "Soziale Isolation",
+          "positive_cases": 8,
+          "percentage_of_total": 16.0,
+          "percentage_of_category": 27.586206896551722
+        },
+        "Umwelt--Mobilitaetsprobleme": {
+          "name": "Mobilitaetsprobleme",
+          "positive_cases": 21,
+          "percentage_of_total": 42.0,
+          "percentage_of_category": 72.41379310344827
+        },
+        "Umwelt--Wohnsituatuation": {
+          "name": "Wohnsituatuation",
+          "positive_cases": 12,
+          "percentage_of_total": 24.0,
+          "percentage_of_category": 41.37931034482759
+        },
+        "Umwelt--Finazielle Probleme": {
+          "name": "Finazielle Probleme",
+          "positive_cases": 2,
+          "percentage_of_total": 4.0,
+          "percentage_of_category": 6.896551724137931
+        }
+      }
+    },
+    "Med RM": {
+      "positive_cases": 50,
+      "percentage": 100.0,
+      "subcategories": [
+        "Med RM--Arzt-Vorstellung",
+        "Med RM--Arzt-Wechsel",
+        "Med RM--Organisation ambulante Therapie",
+        "Med RM--Organisation medizinische Reha",
+        "Med RM--Wietere Krankenhausaufenthalte",
+        "Med RM--Psychotherapie",
+        "Organisation Pflege"
+      ],
+      "subcategory_stats": {
+        "Med RM--Arzt-Vorstellung": {
+          "name": "Arzt-Vorstellung",
+          "positive_cases": 39,
+          "percentage_of_total": 78.0,
+          "percentage_of_category": 78.0
+        },
+        "Med RM--Arzt-Wechsel": {
+          "name": "Arzt-Wechsel",
+          "positive_cases": 7,
+          "percentage_of_total": 14.000000000000002,
+          "percentage_of_category": 14.000000000000002
+        },
+        "Med RM--Organisation ambulante Therapie": {
+          "name": "Organisation ambulante Therapie",
+          "positive_cases": 48,
+          "percentage_of_total": 96.0,
+          "percentage_of_category": 96.0
+        },
+        "Med RM--Organisation medizinische Reha": {
+          "name": "Organisation medizinische Reha",
+          "positive_cases": 27,
+          "percentage_of_total": 54.0,
+          "percentage_of_category": 54.0
+        },
+        "Med RM--Wietere Krankenhausaufenthalte": {
+          "name": "Wietere Krankenhausaufenthalte",
+          "positive_cases": 21,
+          "percentage_of_total": 42.0,
+          "percentage_of_category": 42.0
+        },
+        "Med RM--Psychotherapie": {
+          "name": "Psychotherapie",
+          "positive_cases": 12,
+          "percentage_of_total": 24.0,
+          "percentage_of_category": 24.0
+        },
+        "Organisation Pflege": {
+          "name": "Organisation Pflege",
+          "positive_cases": 16,
+          "percentage_of_total": 32.0,
+          "percentage_of_category": 32.0
+        }
+      }
+    },
+    "Soziales RM": {
+      "positive_cases": 18,
+      "percentage": 36.0,
+      "subcategories": [
+        "Soziales RM--Lohnersatzleistungen",
+        "Soziales RM--Arbeitslosenunterstuetzung",
+        "Soziales RM--Antrag auf Sozialleistungen",
+        "Soziales RM--Einleitung Begutachtung"
+      ],
+      "subcategory_stats": {
+        "Soziales RM--Lohnersatzleistungen": {
+          "name": "Lohnersatzleistungen",
+          "positive_cases": 8,
+          "percentage_of_total": 16.0,
+          "percentage_of_category": 44.44444444444444
+        },
+        "Soziales RM--Arbeitslosenunterstuetzung": {
+          "name": "Arbeitslosenunterstuetzung",
+          "positive_cases": 3,
+          "percentage_of_total": 6.0,
+          "percentage_of_category": 16.666666666666664
+        },
+        "Soziales RM--Antrag auf Sozialleistungen": {
+          "name": "Antrag auf Sozialleistungen",
+          "positive_cases": 4,
+          "percentage_of_total": 8.0,
+          "percentage_of_category": 22.22222222222222
+        },
+        "Soziales RM--Einleitung Begutachtung": {
+          "name": "Einleitung Begutachtung",
+          "positive_cases": 7,
+          "percentage_of_total": 14.000000000000002,
+          "percentage_of_category": 38.88888888888889
+        }
+      }
+    },
+    "Technisches RM": {
+      "positive_cases": 36,
+      "percentage": 72.0,
+      "subcategories": [
+        "Technisches RM--Hilfmittelversorgung",
+        "Technisches RM--Mobilit\u00e4tshilfe",
+        "Technisches RM--Bauliche Anpassung",
+        "Technisches RM--Arbetsplatzanpassung"
+      ],
+      "subcategory_stats": {
+        "Technisches RM--Hilfmittelversorgung": {
+          "name": "Hilfmittelversorgung",
+          "positive_cases": 34,
+          "percentage_of_total": 68.0,
+          "percentage_of_category": 94.44444444444444
+        },
+        "Technisches RM--Mobilit\u00e4tshilfe": {
+          "name": "Mobilit\u00e4tshilfe",
+          "positive_cases": 20,
+          "percentage_of_total": 40.0,
+          "percentage_of_category": 55.55555555555556
+        },
+        "Technisches RM--Bauliche Anpassung": {
+          "name": "Bauliche Anpassung",
+          "positive_cases": 7,
+          "percentage_of_total": 14.000000000000002,
+          "percentage_of_category": 19.444444444444446
+        },
+        "Technisches RM--Arbetsplatzanpassung": {
+          "name": "Arbetsplatzanpassung",
+          "positive_cases": 3,
+          "percentage_of_total": 6.0,
+          "percentage_of_category": 8.333333333333332
+        }
+      }
+    },
+    "Berufliches RM": {
+      "positive_cases": 17,
+      "percentage": 34.0,
+      "subcategories": [
+        "Berufliches RM--Leistungen zur Teilhabe am Arbeitsleben",
+        "Berufliches RM--Integration/berufliche Neurientierung allgemeiner Arbeitsmarkt",
+        "Berufliches RM--Wiedereingliederung gef\u00f6rderter Arbeitsmarkt",
+        "Berufliches RM--BEM"
+      ],
+      "subcategory_stats": {
+        "Berufliches RM--Leistungen zur Teilhabe am Arbeitsleben": {
+          "name": "Leistungen zur Teilhabe am Arbeitsleben",
+          "positive_cases": 13,
+          "percentage_of_total": 26.0,
+          "percentage_of_category": 76.47058823529412
+        },
+        "Berufliches RM--Integration/berufliche Neurientierung allgemeiner Arbeitsmarkt": {
+          "name": "Integration/berufliche Neurientierung allgemeiner Arbeitsmarkt",
+          "positive_cases": 5,
+          "percentage_of_total": 10.0,
+          "percentage_of_category": 29.411764705882355
+        },
+        "Berufliches RM--Wiedereingliederung gef\u00f6rderter Arbeitsmarkt": {
+          "name": "Wiedereingliederung gef\u00f6rderter Arbeitsmarkt",
+          "positive_cases": 0,
+          "percentage_of_total": 0.0,
+          "percentage_of_category": 0.0
+        },
+        "Berufliches RM--BEM": {
+          "name": "BEM",
+          "positive_cases": 1,
+          "percentage_of_total": 2.0,
+          "percentage_of_category": 5.88235294117647
+        }
+      }
+    }
+  }
+}

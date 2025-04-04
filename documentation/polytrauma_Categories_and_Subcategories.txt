@@ -1,0 +1,72 @@
+
+Körperteil:
+- Kopf
+- Hals
+- Thorax
+- Abdomen
+- Arm links
+- Arm rechts
+- Wirbelsaeule
+- Bein rechts
+- Bein links
+- Becken
+
+Somatisch:
+- Funktionsstoerung
+- Schmerz
+- Komplikationen
+
+Personenbezogen:
+- Psychische Probleme/Compliance
+- Entschaedigungsbegehren
+- Migrationshintergrund
+- Suchtverhalten
+- Zusaetzliche Erkrankungen
+
+Taetigkeit:
+- Arbeitsunfaehig
+- Wiedereingliederung
+- Arbeitsfaehig
+- BU/EU
+- Altersrentner
+- Ehrenamt
+- Zuverdienst
+- Index
+
+Umwelt:
+- Beziehungsprobleme
+- Soziale Isolation
+- Mobilitaetsprobleme
+- Wohnsituatuation
+- Finazielle Probleme
+
+Med RM:
+- Arzt-Vorstellung
+- Arzt-Wechsel
+- Organisation ambulante Therapie
+- Organisation medizinische Reha
+- Weitere Krankenhausaufenthalte
+- Psychotherapie
+- Organisation Pflege
+
+Soziales RM:
+- Lohnersatzleistungen
+- Arbeitslosenunterstuetzung
+- Antrag auf Sozialleistungen
+- Einleitung Begutachtung
+
+Technisches RM:
+- Hilfsmittelversorgung
+- Mobilitaetshilfe
+- Bauliche Anpassung
+- Arbeitsplatzanpassung
+
+Berufliches RM:
+- Leistungen zur Teilhabe am Arbeitsleben
+- Integration/berufliche Neuorientierung allgemeiner Arbeitsmarkt
+- Wiedereingliederung gefoerderter Arbeitsmarkt
+- BEM
+
+General Information:
+- Geschlecht
+- Alter in Dekaden
