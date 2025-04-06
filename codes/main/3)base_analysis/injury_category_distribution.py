@@ -359,10 +359,10 @@ def create_heatmap(results, output_folder, logger):
     logger.info(f"Saved top subcategories heatmap to {output_path}")
 
 
-def export_results(results, step3_output_folder, logger):
+def export_results(results, step3_output_folder, logger, filename_prefix=""):
     """Export the analysis results to Excel and JSON files."""
     # Export to Excel
-    excel_path = os.path.join(step3_output_folder, "injury_category_analysis.xlsx")
+    excel_path = os.path.join(step3_output_folder, f"{filename_prefix}injury_category_analysis.xlsx")
 
     # Create summary DataFrame
     summary_data = []
@@ -413,7 +413,8 @@ def export_results(results, step3_output_folder, logger):
 
     # Export to JSON
     import json
-    json_path = os.path.join(step3_output_folder, "injury_category_analysis.json")
+    json_path = os.path.join(step3_output_folder, f"{filename_prefix}injury_category_analysis.json")
+
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
 
@@ -422,24 +423,221 @@ def export_results(results, step3_output_folder, logger):
     return excel_path, json_path
 
 
-def create_summary_report(results, excel_path, step3_output_folder, logger):
-    """Create a markdown summary report of the analysis."""
-    report_path = os.path.join(step3_output_folder, "injury_category_analysis_report.md")
+def create_non_body_summary_report(results, excel_path, step3_output_folder, logger):
+    """Create a German markdown summary report for non-body categories."""
+    report_path = os.path.join(step3_output_folder, "nicht_koerperliche_kategorien_bericht.md")
 
     with open(report_path, "w", encoding="utf-8") as f:
-        # Write header
-        f.write("# Injury Category Analysis Report\n\n")
-        f.write(f"**Analysis Date:** {pd.Timestamp.now().strftime('%Y-%m-%d')}\n\n")
+        # German headers and content
+        f.write("# Analyse der nicht-körperlichen Verletzungskategorien\n\n")
+        f.write(f"**Analysedatum:** {pd.Timestamp.now().strftime('%Y-%m-%d')}\n\n")
 
-        # Write overview
-        f.write("## Overview\n\n")
+        # Overview
+        f.write("## Überblick\n\n")
         f.write(
-            f"This analysis examines the distribution of injury categories across {results['total_cases']} unique patient cases. ")
+            f"Diese Analyse untersucht die Verteilung von nicht-körperlichen Verletzungskategorien bei {results['total_cases']} ")
         f.write(
-            "It provides insights into the prevalence of different injury types and the relationships between them.\n\n")
+            "individuellen Patientenfällen. Sie gibt Einblicke in die Prävalenz verschiedener Kategorien und deren Beziehungen.\n\n")
 
-        # Write key findings
-        f.write("## Key Findings\n\n")
+        # Key findings
+        f.write("## Wichtigste Erkenntnisse\n\n")
+
+        # Sort categories by percentage
+        sorted_categories = sorted(
+            results["categories"].items(),
+            key=lambda x: x[1]["percentage"],
+            reverse=True
+        )
+
+        # Top 3 most common categories
+        f.write("### Häufigste Kategorien\n\n")
+        f.write("| Rang | Kategorie | Fälle | Prozent |\n")
+        f.write("|------|-----------|-------|--------|\n")
+
+        for i, (cat_name, cat_data) in enumerate(sorted_categories[:min(3, len(sorted_categories))]):
+            f.write(f"| {i + 1} | {cat_name} | {cat_data['positive_cases']} | {cat_data['percentage']:.1f}% |\n")
+
+        f.write("\n")
+
+        # Least common categories (bottom 3 or fewer)
+        bottom_count = min(3, len(sorted_categories))
+        if bottom_count > 0:
+            f.write("### Seltenste Kategorien\n\n")
+            f.write("| Rang | Kategorie | Fälle | Prozent |\n")
+            f.write("|------|-----------|-------|--------|\n")
+
+            bottom_categories = sorted_categories[-bottom_count:]
+            bottom_categories.reverse()  # Show least common first
+
+            for i, (cat_name, cat_data) in enumerate(bottom_categories):
+                f.write(
+                    f"| {len(sorted_categories) - i} | {cat_name} | {cat_data['positive_cases']} | {cat_data['percentage']:.1f}% |\n")
+
+            f.write("\n")
+
+        # Top subcategories
+        f.write("### Top-Unterkategorien nach Kategorie\n\n")
+
+        for cat_name, cat_data in sorted_categories:
+            f.write(f"#### {cat_name}\n\n")
+
+            # Sort columns by percentage
+            sorted_columns = sorted(
+                cat_data["columns"].items(),
+                key=lambda x: x[1]["percentage"],
+                reverse=True
+            )
+
+            # Show top 3 or all if less than 3
+            top_columns = sorted_columns[:min(3, len(sorted_columns))]
+
+            f.write("| Unterkategorie | Fälle | Prozent |\n")
+            f.write("|---------------|-------|--------|\n")
+
+            for col_name, col_data in top_columns:
+                f.write(f"| {col_data['name']} | {col_data['positive_cases']} | {col_data['percentage']:.1f}% |\n")
+
+            f.write("\n")
+
+        # [Methodology, Resources, and Conclusion sections similar to the original but in German]
+
+        f.write("## Methodik\n\n")
+        # [German methodology content]
+
+        f.write("## Ressourcen\n\n")
+        # [German resources content]
+
+        f.write("## Fazit\n\n")
+        # [German conclusion with most/least common categories]
+
+        f.write("*Dieser Bericht wurde automatisch im Rahmen des Polytrauma-Analyseprojekts erstellt.*")
+
+    logger.info(f"Created non-body summary report: {report_path}")
+    return report_path
+
+def create_body_part_summary_report(results, excel_path, step3_output_folder, logger, patients_without_injury):
+    """Create a German markdown summary report for body part injuries."""
+    report_path = os.path.join(step3_output_folder, "koerperteil_verletzungen_bericht.md")
+
+    with open(report_path, "w", encoding="utf-8") as f:
+        # German headers and content
+        f.write("# Analyse der Körperteilverletzungen\n\n")
+        f.write(f"**Analysedatum:** {pd.Timestamp.now().strftime('%Y-%m-%d')}\n\n")
+
+        # Overview
+        f.write("## Überblick\n\n")
+        f.write(f"Diese Analyse untersucht die Verteilung von Körperteilverletzungen bei {results['total_cases']} ")
+        f.write(
+            "individuellen Patientenfällen. Sie gibt Einblicke in die Prävalenz verschiedener Verletzungstypen.\n\n")
+
+        # Patient without injury (if any)
+        if patients_without_injury:
+            f.write("## Patient ohne Körperteilverletzung\n\n")
+            f.write(
+                f"Ein Patient (Schadennummer: {', '.join(patients_without_injury)}) weist keine Körperteilverletzung auf. ")
+            f.write(
+                "Dieser Fall könnte weitere Untersuchungen erfordern, um die spezifischen Umstände zu verstehen.\n\n")
+
+        # Sort body parts by percentage
+        body_part_category = list(results["categories"].values())[0]  # There's only one category: "Körperteil"
+
+        # Extract and sort body parts
+        sorted_body_parts = sorted(
+            body_part_category["columns"].items(),
+            key=lambda x: x[1]["percentage"],
+            reverse=True
+        )
+
+        # Body part distribution
+        f.write("## Verteilung der Körperteilverletzungen\n\n")
+        f.write("| Körperteil | Fälle mit Verletzung | Prozent |\n")
+        f.write("|------------|----------------------|--------|\n")
+
+        for body_part, data in sorted_body_parts:
+            f.write(f"| {data['name']} | {data['positive_cases']} | {data['percentage']:.1f}% |\n")
+
+        f.write("\n")
+
+        # Most common body part injuries
+        f.write("## Häufigste Körperteilverletzungen\n\n")
+
+        # Get the top 3 or fewer if less than 3 are available
+        top_body_parts = sorted_body_parts[:min(3, len(sorted_body_parts))]
+
+        for i, (body_part, data) in enumerate(top_body_parts):
+            rank = i + 1
+            f.write(f"{rank}. **{data['name']}**: {data['positive_cases']} Patienten ({data['percentage']:.1f}%)\n")
+
+        f.write("\n")
+
+        # Methodology
+        f.write("## Methodik\n\n")
+        f.write("Diese Analyse wurde mit folgender Methodik durchgeführt:\n\n")
+        f.write("1. Jede eindeutige 'Schadennummer' repräsentiert einen individuellen Patientenfall\n")
+        f.write(
+            "2. Ein Patient wird als positiv für eine Verletzung gezählt, wenn bei irgendeinem Besuch 'Ja' vermerkt wurde\n")
+        f.write(
+            "3. Für Extremitäten wurden 'Arm links'/'Arm rechts' zu 'Arm' und 'Bein links'/'Bein rechts' zu 'Bein' zusammengefasst\n")
+        f.write("4. Fehlende Werte wurden als 'Nein' behandelt\n")
+        f.write("5. Prozentsätze werden auf Basis der Gesamtzahl der eindeutigen Fälle berechnet\n\n")
+
+        # Resources
+        f.write("## Ressourcen\n\n")
+        f.write(f"- Vollständige Analyseergebnisse: [Excel-Datei]({os.path.basename(excel_path)})\n")
+        f.write("- Visualisierungen:\n")
+        f.write("  - Vergleichsdiagramm der Körperteile\n")
+        f.write("  - Horizontales Vergleichsdiagramm\n")
+        f.write("  - Kreisdiagramm der Verteilung\n")
+        f.write("  - Radardiagramm der Körperteile\n")
+        f.write("  - Heatmap der häufigsten Körperteilverletzungen\n\n")
+
+        # Conclusion
+        f.write("## Fazit\n\n")
+        f.write("Die Analyse der Körperteilverletzungen zeigt bedeutende Muster im Polytrauma-Datensatz. ")
+
+        # Most common body part
+        if sorted_body_parts:
+            top_body_part_name = sorted_body_parts[0][1]["name"]
+            top_body_part_percentage = sorted_body_parts[0][1]["percentage"]
+            f.write(
+                f"Die häufigste Körperteilverletzung betrifft den {top_body_part_name} ({top_body_part_percentage:.1f}%). ")
+
+            # If we have more body parts, mention the least common one
+            if len(sorted_body_parts) > 1:
+                least_body_part_name = sorted_body_parts[-1][1]["name"]
+                least_body_part_percentage = sorted_body_parts[-1][1]["percentage"]
+                f.write(
+                    f"Die seltenste Körperteilverletzung betrifft den {least_body_part_name} ({least_body_part_percentage:.1f}%). ")
+
+        f.write(
+            "Diese Erkenntnisse deuten auf Bereiche hin, in denen Rehabilitationsressourcen basierend auf der Prävalenz priorisiert werden könnten.\n\n")
+
+        f.write("*Dieser Bericht wurde automatisch im Rahmen des Polytrauma-Analyseprojekts erstellt.*")
+
+    logger.info(f"Created body part summary report: {report_path}")
+    return report_path
+
+    """Create a German markdown summary report for body part injuries."""
+    report_path = os.path.join(step3_output_folder, "koerperteil_verletzungen_bericht.md")
+
+    with open(report_path, "w", encoding="utf-8") as f:
+        # German headers and content
+        f.write("# Analyse der Körperteilverletzungen\n\n")
+        f.write(f"**Analysedatum:** {pd.Timestamp.now().strftime('%Y-%m-%d')}\n\n")
+
+        # Overview
+        f.write("## Überblick\n\n")
+        f.write(f"Diese Analyse untersucht die Verteilung von Körperteilverletzungen bei {results['total_cases']} ")
+        f.write(
+            "individuellen Patientenfällen. Sie gibt Einblicke in die Prävalenz verschiedener Verletzungstypen.\n\n")
+
+        # Patient without injury (if any)
+        if patients_without_injury:
+            f.write("## Patient ohne Körperteilverletzung\n\n")
+            f.write(
+                f"Ein Patient (Schadennummer: {', '.join(patients_without_injury)}) weist keine Körperteilverletzung auf. ")
+            f.write(
+                "Dieser Fall könnte weitere Untersuchungen erfordern, um die spezifischen Umstände zu verstehen.\n\n")
 
         # Sort categories by percentage
         sorted_categories = sorted(
@@ -572,9 +770,13 @@ def injury_category_distribution():
         # Create merged categories for extremities
         df, body_part_columns = create_merged_categories(df, logger)
 
+        # CHANGE 1: Create separate category dictionaries
+        body_part_categories = {
+            "Körperteil": body_part_columns
+        }
+
         # Define categories and their respective columns
-        categories = {
-            "Körperteil": body_part_columns,
+        non_body_categories  = {
             "Somatisch": ["Somatisch-- Funktionsstoerung", "Somatisch-- Schmerz", "Somatisch--Komplikationen"],
             "Personenbezogen": [
                 "Personenbezogen--Psychische Probleme/Compliance",
@@ -611,35 +813,57 @@ def injury_category_distribution():
                 "Berufliches RM--Wiedereingliederung geförderter Arbeitsmarkt", "Berufliches RM--BEM"
             ]
         }
+        # Analyze separate categories
+        logger.info("Analyzing body part injury categories...")
+        body_part_results = analyze_categories(df, body_part_categories, logger)
 
-        # Analyze categories
-        logger.info("Analyzing main injury categories...")
-        results = analyze_categories(df, categories, logger)
+        logger.info("Analyzing non-body injury categories...")
+        non_body_results = analyze_categories(df, non_body_categories, logger)
 
-        # Visualize category comparison
-        logger.info("Creating category comparison visualizations...")
-        visualize_category_comparison(results, step3_plots_folder, logger)
+        # Find patient with no body part injury
+        body_part_flags = df.groupby("Schadennummer")[body_part_columns].apply(
+            lambda g: (g == "Ja").any().any()
+        )
+        patients_without_injury = body_part_flags[~body_part_flags].index.tolist()
+        if patients_without_injury:
+            logger.info(f"Patient(s) with no body part injury: {patients_without_injury}")
 
-        # Create heatmap of top subcategories
-        logger.info("Creating heatmap of top subcategories...")
-        create_heatmap(results, step3_plots_folder, logger)
+        # Create separate folders
+        body_part_plots_folder = os.path.join(step3_plots_folder, "body_part_injuries")
+        os.makedirs(body_part_plots_folder, exist_ok=True)
+
+        non_body_plots_folder = os.path.join(step3_plots_folder, "non_body_categories")
+        os.makedirs(non_body_plots_folder, exist_ok=True)
+
+        # Visualize results
+        logger.info("Creating visualizations...")
+        visualize_category_comparison(body_part_results, body_part_plots_folder, logger)
+        create_heatmap(body_part_results, body_part_plots_folder, logger)
+
+        visualize_category_comparison(non_body_results, non_body_plots_folder, logger)
+        create_heatmap(non_body_results, non_body_plots_folder, logger)
 
         # Export results
         logger.info("Exporting analysis results...")
-        excel_path, json_path = export_results(results, step3_output_folder, logger)
+        body_excel_path, body_json_path = export_results(
+            body_part_results, step3_output_folder, logger, filename_prefix="body_part_")
 
-        # Create summary report
-        logger.info("Creating summary report...")
-        report_path = create_summary_report(results, excel_path, step3_output_folder, logger)
+        non_body_excel_path, non_body_json_path = export_results(
+            non_body_results, step3_output_folder, logger, filename_prefix="non_body_")
 
-        logger.info("Injury category analysis completed successfully.")
-        logger.info(f"Results saved to: {step3_output_folder}")
-        logger.info(f"Visualizations saved to: {step3_plots_folder}")
+        # Create reports
+        logger.info("Creating summary reports...")
+        create_body_part_summary_report(
+            body_part_results, body_excel_path, step3_output_folder, logger, patients_without_injury)
+
+        create_non_body_summary_report(
+            non_body_results, non_body_excel_path, step3_output_folder, logger)
+
+        # [Success logging as before]
 
     except Exception as e:
         logger.error(f"Error in injury category analysis: {str(e)}", exc_info=True)
         raise
-
 
 if __name__ == "__main__":
     injury_category_distribution()

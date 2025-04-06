@@ -110,7 +110,7 @@ if __name__ == "__main__":
         print("python-dotenv not installed. Using hardcoded paths.")
 
     # Get paths from environment or use defaults
-    input_file_path = os.getenv("BASE_INPUT_EXCEL", "data/input/Polytrauma Analysis.xlsx")
+    input_file_path = os.getenv("BASE_INPUT_EXCEL")
     output_folder = os.getenv("OUTPUT_FOLDER", "data/output")
     log_folder = os.getenv("LOG_FOLDER", "logs")
     plots_folder = os.getenv("GRAPHS_FOLDER", "plots")

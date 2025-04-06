@@ -464,21 +464,19 @@ def generate_summary_report(category_stats, validation_results, output_folder, l
     try:
         with open(report_path, "w", encoding="utf-8") as f:
             # Write header
-            f.write("# Analysebericht zur Verteilung der Verletzungskategorien\n\n")
+            f.write("# Analysebericht zur Verteilung der nicht-körperlichen Verletzungskategorien\n\n")
             f.write(f"**Datum der Analyse:** {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
 
             # Write overview
             f.write("## Übersicht\n\n")
-            f.write(
-                f"Diese Analyse untersucht die Verteilung von {total_cases} Polytrauma-Fällen über verschiedene Verletzungskategorien und Unterkategorien.\n\n")
-
+            f.write("Diese Analyse untersucht die Verteilung von nicht-körperlichen Verletzungskategorien bei...")
             # Add note about merged arm and leg categories
             f.write(
                 "**Hinweis zur Kategorieaggregation:** 'Arm links' und 'Arm rechts' wurden zur Kategorie 'Arm' zusammengefasst. ")
             f.write("Ebenso wurden 'Bein links' und 'Bein rechts' zur Kategorie 'Bein' zusammengefasst. ")
             f.write(
                 "Ein Fall wird als positiv für diese Kategorien gezählt, wenn mindestens eine der Seiten betroffen ist.\n\n")
-
+            f.write("Hinweis: Körperteilverletzungen werden in einer separaten Analyse behandelt.\n\n")
             # Write validation results
             f.write("## Validierungsergebnisse\n\n")
 
@@ -658,8 +656,6 @@ def injury_sub_category_distribution():
 
         # Updated categories with merged Arm and Bein
         categories = {
-            "Körperteil": ['Kopf', 'Hals', 'Thorax', 'Abdomen', 'Arm', 'Wirbelsaeule',
-                           'Bein', 'Becken'],  # Using merged fields
             "Somatisch": ['Somatisch-- Funktionsstoerung', 'Somatisch-- Schmerz', 'Somatisch--Komplikationen'],
             "Personenbezogen": ['Personenbezogen--Psychische Probleme/Compliance',
                                 'Personenbezogen--Entschädigungsbegehren',

@@ -1,12 +1,12 @@
-# Analysebericht zur Verteilung der Verletzungskategorien
+# Analysebericht zur Verteilung der nicht-körperlichen Verletzungskategorien
 
-**Datum der Analyse:** 2025-03-28 11:21:05
+**Datum der Analyse:** 2025-04-06 19:39:09
 
 ## Übersicht
 
-Diese Analyse untersucht die Verteilung von 50 Polytrauma-Fällen über verschiedene Verletzungskategorien und Unterkategorien.
+Diese Analyse untersucht die Verteilung von nicht-körperlichen Verletzungskategorien bei...**Hinweis zur Kategorieaggregation:** 'Arm links' und 'Arm rechts' wurden zur Kategorie 'Arm' zusammengefasst. Ebenso wurden 'Bein links' und 'Bein rechts' zur Kategorie 'Bein' zusammengefasst. Ein Fall wird als positiv für diese Kategorien gezählt, wenn mindestens eine der Seiten betroffen ist.
 
-**Hinweis zur Kategorieaggregation:** 'Arm links' und 'Arm rechts' wurden zur Kategorie 'Arm' zusammengefasst. Ebenso wurden 'Bein links' und 'Bein rechts' zur Kategorie 'Bein' zusammengefasst. Ein Fall wird als positiv für diese Kategorien gezählt, wenn mindestens eine der Seiten betroffen ist.
+Hinweis: Körperteilverletzungen werden in einer separaten Analyse behandelt.
 
 ## Validierungsergebnisse
 
@@ -18,7 +18,6 @@ Diese Analyse untersucht die Verteilung von 50 Polytrauma-Fällen über verschie
 |----------|----------------|------------|
 | Taetigkeit | 50 | 100.0% |
 | Med RM | 50 | 100.0% |
-| Körperteil | 49 | 98.0% |
 | Somatisch | 46 | 92.0% |
 | Technisches RM | 36 | 72.0% |
 | Personenbezogen | 33 | 66.0% |
@@ -61,24 +60,6 @@ Diese Analyse untersucht die Verteilung von 50 Polytrauma-Fällen über verschie
 | Organisation Pflege | 16 | 32.0% | 32.0% |
 | Psychotherapie | 12 | 24.0% | 24.0% |
 | Arzt-Wechsel | 7 | 14.0% | 14.0% |
-
-### Körperteil
-
-- **Positive Fälle insgesamt:** 49 (98.0%)
-- **Anzahl der Unterkategorien:** 8
-
-#### Unterkategorienaufschlüsselung
-
-| Unterkategorie | Positive Fälle | % der Gesamtfälle | % innerhalb der Kategorie |
-|-------------|----------------|------------------|-------------------|
-| Thorax | 33 | 66.0% | 67.3% |
-| Arm | 32 | 64.0% | 65.3% |
-| Bein | 30 | 60.0% | 61.2% |
-| Kopf | 27 | 54.0% | 55.1% |
-| Wirbelsaeule | 27 | 54.0% | 55.1% |
-| Becken | 13 | 26.0% | 26.5% |
-| Abdomen | 10 | 20.0% | 20.4% |
-| Hals | 1 | 2.0% | 2.0% |
 
 ### Somatisch
 
@@ -181,10 +162,6 @@ Die folgenden Visualisierungen wurden im Rahmen dieser Analyse erstellt:
 
 ![Category Percentage Histogram](category_percentage_histogram.png)
 
-### Körperteil Subcategory Distribution
-
-![Körperteil Subcategory Distribution](Körperteil_subcategory_distribution.png)
-
 ### Med Rm Subcategory Distribution
 
 ![Med Rm Subcategory Distribution](Med_RM_subcategory_distribution.png)
@@ -228,7 +205,7 @@ Die folgenden Visualisierungen wurden im Rahmen dieser Analyse erstellt:
 **Häufigste Kategorien:**
 - Taetigkeit: 100.0% (50 Fälle)
 - Med RM: 100.0% (50 Fälle)
-- Körperteil: 98.0% (49 Fälle)
+- Somatisch: 92.0% (46 Fälle)
 
 **Seltenste Kategorien:**
 - Berufliches RM: 34.0% (17 Fälle)

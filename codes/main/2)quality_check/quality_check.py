@@ -399,8 +399,75 @@ def generate_summary(df, missing_data, type_validation, categorical_issues):
     return summary
 
 
+def propagate_patient_level_data(df, logger):
+    """
+    Fill missing values in patient-level fields by propagating values within each Schadennummer.
+    This assumes information like gender, birth date, etc. should be consistent across all visits
+    for the same patient.
+    """
+    logger.info("Propagating patient-level data across visits...")
+
+    # List of columns to propagate (patient-level data that should be consistent)
+    patient_columns = [
+        'Geschlecht',
+        'Gebursdatum',
+        'Alter in Dekaden',
+        'Age_At_Accident'
+    ]
+
+    # Track changes
+    changes_made = 0
+
+    # Process each patient
+    for patient_id in df['Schadennummer'].unique():
+        patient_mask = df['Schadennummer'] == patient_id
+        patient_data = df.loc[patient_mask]
+
+        # For each patient-level column
+        for column in patient_columns:
+            if column not in df.columns:
+                continue
+
+            # Find non-null values for this patient in this column
+            valid_values = patient_data[column].dropna()
+
+            # If we have any valid values, propagate to all visits for this patient
+            if len(valid_values) > 0:
+                # Get the first non-null value
+                value_to_use = valid_values.iloc[0]
+
+                # Count current nulls for this patient in this column
+                null_count = patient_data[column].isnull().sum()
+
+                if null_count > 0:
+                    # Fill nulls with the value
+                    df.loc[patient_mask, column] = df.loc[patient_mask, column].fillna(value_to_use)
+                    changes_made += null_count
+                    logger.info(f"  Filled {null_count} missing values in {column} for patient {patient_id}")
+
+    # Generate decades from Age_At_Accident where Alter in Dekaden is still missing
+    if 'Age_At_Accident' in df.columns and 'Alter in Dekaden' in df.columns:
+        # Find rows where Age_At_Accident exists but Alter in Dekaden is missing
+        mask = df['Age_At_Accident'].notna() & df['Alter in Dekaden'].isna()
+
+        if mask.any():
+            # Calculate decade from age and format as string with "er" suffix
+            decades = (df.loc[mask, 'Age_At_Accident'] // 10 * 10).astype(int).astype(str) + "er"
+            df.loc[mask, 'Alter in Dekaden'] = decades
+            decade_changes = mask.sum()
+            changes_made += decade_changes
+            logger.info(f"  Generated {decade_changes} decade values from Age_At_Accident")
+
+    logger.info(f"Total patient-level values propagated: {changes_made}")
+
+    return df
+
+
 def main():
     try:
+        # Use the global df variable
+        global df
+
         # Perform quality checks
         logging.info("Analyzing missing values...")
         missing_data = analyze_missing_values(df)
@@ -413,6 +480,9 @@ def main():
 
         logging.info("Validating categorical columns...")
         categorical_issues = validate_categorical_columns(df)
+
+        logging.info("Propagating patient-level data across visits...")
+        df = propagate_patient_level_data(df, logging)  # Use logging instead of logger
 
         logging.info("Replacing missing values in categorical columns...")
         df_clean = replace_missing_values(df)
