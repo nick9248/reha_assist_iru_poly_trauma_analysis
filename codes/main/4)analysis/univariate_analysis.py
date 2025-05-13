@@ -695,10 +695,14 @@ def analyze_demographic_impact(patient_df, plots_folder, logger):
                         # Create box plot for age decades
                         plt.figure(figsize=(12, 6))
 
-                        # Box plot by decade
+                        # Sort decades in ascending order
+                        sorted_decades = sorted(valid_decades["Altersdekade"].unique(),
+                                                key=lambda x: int(x.replace('er', '')))
+
+                        # Box plot by decade with explicit order
                         decade_data = age_data[age_data["Altersdekade"].isin(valid_decades["Altersdekade"])]
                         sns.boxplot(x="Altersdekade", y="Heilungsdauer", data=decade_data,
-                                    palette="viridis")
+                                    palette="viridis", order=sorted_decades)
 
                         # Add individual data points
                         sns.stripplot(x="Altersdekade", y="Heilungsdauer", data=decade_data,

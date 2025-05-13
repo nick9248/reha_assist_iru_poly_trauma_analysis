@@ -224,6 +224,54 @@ def create_enhanced_age_distribution(df, plot_folder, logger):
         ax3.set_xlabel("Altersdekade", fontsize=14)
         ax3.set_ylabel("Anzahl der Patienten", fontsize=14)
 
+        # Add this code after the decade calculation but before creating the plot
+        # This would typically go after the line where you calculate decade_counts
+
+        # Detailed check for patients assigned to multiple decades
+        patient_decades = {}
+        for _, row in df.iterrows():
+            patient_id = row['Schadennummer']
+            if pd.notna(row['Age']):  # Ensure age is not NaN
+                decade = (row['Age'] // 10) * 10
+
+                if patient_id not in patient_decades:
+                    patient_decades[patient_id] = set()
+
+                patient_decades[patient_id].add(decade)
+
+        # Find patients assigned to multiple decades
+        patients_in_multiple_decades = {p: decades for p, decades in patient_decades.items() if len(decades) > 1}
+
+        if patients_in_multiple_decades:
+            for patient_id, decades in patients_in_multiple_decades.items():
+                # Get detailed information about this patient
+                patient_data = df[df['Schadennummer'] == patient_id]
+
+                # Log detailed information about the problematic patient
+                logger.warning(f"Patient {patient_id} appears in multiple decades: {decades}")
+
+                # Log all age values for this patient to see what's happening
+                ages = patient_data['Age'].tolist()
+                logger.warning(f"All age values for patient {patient_id}: {ages}")
+
+                # If 'Gebursdatum' is available, check that too
+                if 'Gebursdatum' in df.columns:
+                    birth_dates = patient_data['Gebursdatum'].unique()
+                    logger.warning(f"Birth dates for patient {patient_id}: {birth_dates}")
+
+                # Look at all visits for this patient
+                visit_dates = None
+                if 'Besuchsdatum' in df.columns:
+                    visit_info = patient_data[['Besuchsdatum', 'Age']].sort_values('Besuchsdatum')
+                    logger.warning(f"Visit dates and ages for patient {patient_id}:")
+                    for _, visit_row in visit_info.iterrows():
+                        logger.warning(f"  Visit date: {visit_row['Besuchsdatum']}, Age: {visit_row['Age']}")
+
+            # Log how this affects the total count
+            unique_patients = df['Schadennummer'].nunique()
+            decade_patient_count = sum(decade_counts)
+            logger.warning(f"Unique patients: {unique_patients}, Sum of decade counts: {decade_patient_count}")
+            logger.warning(f"Discrepancy: {decade_patient_count - unique_patients} extra patients counted")
         # Add value labels to bars
         for bar in bars:
             height = bar.get_height()

@@ -1,6 +1,6 @@
 # Analysebericht zur Verteilung der nicht-körperlichen Verletzungskategorien
 
-**Datum der Analyse:** 2025-04-06 19:39:09
+**Datum der Analyse:** 2025-05-12 12:24:25
 
 ## Übersicht
 

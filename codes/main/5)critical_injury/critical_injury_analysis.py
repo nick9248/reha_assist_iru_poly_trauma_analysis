@@ -286,31 +286,67 @@ def analyze_critical_injury_impact(df, critical_regions, output_folder, plots_fo
             "Effect_Size_Interpretation": effect_size_interp
         })
 
-        # Create detailed visualization for each critical region
-        plt.figure(figsize=(12, 8))
+        # Create detailed visualization for each critical region - IMPROVED VERSION
+        plt.figure(figsize=(14, 8))
 
         # Left subplot: Violin plot with box plot inside
         plt.subplot(1, 2, 1)
-        sns.violinplot(x=df[region], y=df["Heilungsdauer"],
-                       hue=df[region], palette=["#3498db", "#e74c3c"],
-                       inner='box', legend=False)
+
+        # Create a DataFrame specifically for plotting to ensure proper ordering
+        plot_data = pd.DataFrame({
+            'Status': ['Ja' if x == 'Ja' else 'Nein' for x in df[region]],
+            'Heilungsdauer': df['Heilungsdauer']
+        })
+
+        # Ensure proper category ordering
+        plot_data['Status'] = pd.Categorical(plot_data['Status'], categories=['Ja', 'Nein'])
+
+        # Create violin plot with box plot inside
+        sns.violinplot(x='Status', y='Heilungsdauer', data=plot_data,
+                      palette={'Ja': '#3498db', 'Nein': '#e74c3c'},
+                      inner='box', cut=0)  # cut=0 to not extend beyond data range
 
         # Add individual data points
-        sns.stripplot(x=df[region], y=df["Heilungsdauer"],
-                      jitter=True, alpha=0.6, color='black', size=4)
+        sns.stripplot(x='Status', y='Heilungsdauer', data=plot_data,
+                     jitter=True, alpha=0.6, color='black', size=4)
+
+        # Add horizontal lines for means with clear labels
+        plt.axhline(y=injury_mean, color='#3498db', linestyle='--', alpha=0.7,
+                   label=f"Mittelwert mit Verletzung: {injury_mean:.1f}")
+        plt.axhline(y=no_injury_mean, color='#e74c3c', linestyle='--', alpha=0.7,
+                   label=f"Mittelwert ohne Verletzung: {no_injury_mean:.1f}")
 
         # Add mean markers
-        plt.plot(["Ja"], [injury_mean], marker='o', markersize=10, color="red",
-                 label=f"Mean ({injury_mean:.1f} days)")
-        plt.plot(["Nein"], [no_injury_mean], marker='o', markersize=10, color="red")
+        plt.plot(0, injury_mean, marker='o', markersize=10, color="red")
+        plt.plot(1, no_injury_mean, marker='o', markersize=10, color="red")
+
+        # Add clearer annotations for the means
+        plt.annotate(f"{injury_mean:.1f}", xy=(0, injury_mean), xytext=(0, injury_mean + 20),
+                    ha='center', va='bottom', fontsize=12, fontweight='bold',
+                    bbox=dict(boxstyle='round', facecolor='white', alpha=0.7))
+        plt.annotate(f"{no_injury_mean:.1f}", xy=(1, no_injury_mean), xytext=(1, no_injury_mean + 20),
+                    ha='center', va='bottom', fontsize=12, fontweight='bold',
+                    bbox=dict(boxstyle='round', facecolor='white', alpha=0.7))
 
         # Add titles and labels
         plt.title(f"Heilungsdauer nach {region}-Verletzung", fontsize=14, fontweight="bold")
         plt.xlabel(f"{region}-Verletzung vorhanden", fontsize=12)
         plt.ylabel("Heilungsdauer (Tage)", fontsize=12)
+        plt.legend(loc="upper right")
 
         # Add case counts to x-axis labels
         plt.xticks([0, 1], [f"Ja (n={injury_count})", f"Nein (n={no_injury_count})"])
+
+        # Add a clearer statistical annotation directly on the violin plot
+        stat_box_text = (
+            f"Mittelwert mit Verletzung: {injury_mean:.1f} Tage\n"
+            f"Mittelwert ohne Verletzung: {no_injury_mean:.1f} Tage\n"
+            f"Differenz: {abs(mean_diff):.1f} Tage {direction}\n"
+            f"p-Wert: {p_value:.4f} ({'signifikant' if is_significant else 'nicht signifikant'})"
+        )
+
+        plt.text(0.5, 0.05, stat_box_text, transform=plt.gca().transAxes, fontsize=11,
+                 ha='center', va='bottom', bbox=dict(boxstyle='round', facecolor='white', alpha=0.9))
 
         # Right subplot: Histogram comparison
         plt.subplot(1, 2, 2)
@@ -325,7 +361,7 @@ def analyze_critical_injury_impact(df, critical_regions, output_folder, plots_fo
         plt.hist(no_injury_group, bins=bins, alpha=0.5, label=f"{region}-Verletzung (Nein)",
                  color="#e74c3c", density=True)
 
-        # For mean line labels
+        # For mean line labels - Add clear vertical lines showing means
         plt.axvline(injury_mean, color="#3498db", linestyle='dashed', linewidth=2,
                     label=f"Mittelwert mit Verletzung: {injury_mean:.1f}")
         plt.axvline(no_injury_mean, color="#e74c3c", linestyle='dashed', linewidth=2,
@@ -340,8 +376,8 @@ def analyze_critical_injury_impact(df, critical_regions, output_folder, plots_fo
         # Add statistical results as text
         stat_text = (f"Statistical Test: {test_type}\n"
                      f"p-value: {p_value:.4f}" + (" (signifikant)" if is_significant else " (nicht signifikant)") + "\n"
-                                                                                                                  f"Mittlere Differenz: {abs(mean_diff):.1f} days {direction}\n"
-                                                                                                                  f"Effektgröße (Cohen's d): {cohens_d:.2f} ({effect_size_interp})")
+                     f"Mittlere Differenz: {abs(mean_diff):.1f} days {direction}\n"
+                     f"Effektgröße (Cohen's d): {cohens_d:.2f} ({effect_size_interp})")
 
         plt.text(0.02, 0.02, stat_text, transform=plt.subplot(1, 2, 2).transAxes, fontsize=11,
                  va='bottom', ha='left', bbox=dict(boxstyle='round', facecolor='white', alpha=0.85))
@@ -379,6 +415,18 @@ def analyze_critical_injury_impact(df, critical_regions, output_folder, plots_fo
         # Add individual data points
         sns.stripplot(x="Region", y="Healing_Duration", hue="Status", data=plot_df,
                       dodge=True, alpha=0.6, jitter=True, size=4, color="black")
+
+        # Add mean lines across all groups
+        for region in results:
+            injury_mean = results[region]["injury_mean"]
+            no_injury_mean = results[region]["no_injury_mean"]
+
+            # Add text annotations for mean values
+            i = list(results.keys()).index(region)
+            plt.text(i-0.25, injury_mean+10, f"{injury_mean:.1f}", ha='center', fontsize=10,
+                    fontweight='bold', color="#3498db")
+            plt.text(i+0.25, no_injury_mean+10, f"{no_injury_mean:.1f}", ha='center', fontsize=10,
+                    fontweight='bold', color="#e74c3c")
 
         # Add titles and labels
         plt.title("Vergleich der Heilungsdauer bei kritischen Verletzungstypen", fontsize=16, fontweight="bold")
